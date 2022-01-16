@@ -46,6 +46,15 @@
 			<template v-if="curCompOptActive.type == 'richtext'">
 				<optionsRichText :key="curCompOptActive.index"></optionsRichText>
 			</template>
+			<template v-if="curCompOptActive.type == 'shopDiy'">
+				<optionsShopDiy :key="curCompOptActive.index"></optionsShopDiy>
+			</template>
+			<template v-if="curCompOptActive.type == 'news'">
+				<optionsNew :key="curCompOptActive.index"></optionsNew>
+			</template>
+			<template v-if="curCompOptActive.type == 'hq'">
+				<optionsHq :key="curCompOptActive.index"></optionsHq>
+			</template>
 		</template>
 		<template v-else-if="activeIndex == 1">
 			<view class="w-title u-flex">
@@ -79,8 +88,6 @@
 			return {
 				typeToName: typeToName
 			};
-		},
-		compouted: {
 		},
 		computed: {
 			...mapState(['curCompOptActive', 'optData', 'pageOptFlag', 'activeIndex'])

@@ -34,10 +34,16 @@ import input from 'element-ui/lib/input';
 import table from 'element-ui/lib/table';
 import tableColumn from 'element-ui/lib/table-column';
 import pagination from 'element-ui/lib/pagination';
+import loading from 'element-ui/lib/loading';
 import tree from 'element-ui/lib/tree';
+import row from 'element-ui/lib/row';
+import col from 'element-ui/lib/col';
 // import switch from 'element-ui/lib/switch';
 const element = {
   install: function (Vue) {
+	Vue.use(row)
+    Vue.use(col)
+	Vue.use(loading)
     Vue.use(select)
     Vue.use(option)
     Vue.use(optionGroup)

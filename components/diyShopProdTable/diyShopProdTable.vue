@@ -2,23 +2,14 @@
 	<view class="style-popup">
 		<view class="popup-title u-flex">
 			<u-icon name="buju1" custom-prefix="custom-icon" size="40"></u-icon>
-			<text>商品选择</text>
+			<text>商品配置</text>
 		</view>
 		<view class="popup-content u-flex u-flex-wrap u-col-top">
-			<view class="item-left">
-				<el-tree 
-					:data="cateData" 
-					:props="defaultProps" 
-					node-key="id"
-					@node-click="handleNodeClick"
-					highlight-current
-					:expand-on-click-node="false"
-				></el-tree>
-			</view>
 			<view class="item-right">
 				<el-table 
 					ref="multipleTable"
-					:data="tableData.list" 
+					:data="p_list" 
+					v-loading="loading"
 					tooltip-effect="dark" 
 					style="width: 100%"
 					@selection-change="handleSelectionChange"
@@ -31,27 +22,25 @@
 					</el-table-column>
 					<el-table-column prop="id" label="ID" width="55">
 					</el-table-column>
-					<!-- <el-table-column label="日期" width="120">
-						<template slot-scope="scope">{{ scope.row.date }}</template>
-					</el-table-column> -->
 					<el-table-column prop="pimage" label="图片" width="60">
 						<template slot-scope="scope">
-							<u-image mode="aspectFill" width="80" height="80" :src="scope.row.pimage"></u-image>
+							<u-image mode="aspectFill" width="80" height="80" :src="scope.row.pic1"></u-image>
 						</template>
 					</el-table-column>
-					<el-table-column prop="pname" label="标题" show-overflow-tooltip>
+					<el-table-column prop="name" label="标题" show-overflow-tooltip>
 					</el-table-column>
-					<el-table-column prop="price" label="价格" width="100">
+					<el-table-column prop="price" label="价格" width="200">
 					</el-table-column>
+					<view slot="empty" class="empty-wrap">当前无数据</view>
 				</el-table>
 				<view class="page u-flex u-row-between">
 					<view class="item-left">
 						<el-pagination
 							background
 							layout="total, pager"
-							:total="tableData.count"
-							:page-count="tableData.pages"
-							:page-size="tableData.pageSize || pageSize"
+							:total="Totalcount"
+							:page-count="pagesCount"
+							:page-size="pageSize"
 							:current-page="curP"
 							@current-change="handleChangePage"
 						>
@@ -77,7 +66,23 @@
 		mapActions
 	} from "vuex"
 	export default {
-		name:"diyProductTable",
+		name:"diyShopProdTable",
+		props: {
+			login: {
+				type: String,
+				default: ''
+			},
+			curData: {
+				type: Array,
+				default: () => {
+					return []
+				}
+			},
+			curActive: {
+				type: Number | String,
+				default: 0
+			}
+		},
 		data() {
 			return {
 				defaultProps: {
@@ -87,10 +92,14 @@
 				multipleSelection: [],
 				options: [],
 				pageSize: 10,
+				pagesCount: 10,
+				Totalcount: 10,
 				curP: 1,
 				curCate: "",
 				ls_arr: [],
 				isTreeChange: false,
+				p_list: [],
+				loading: false
 			};
 		},
 		computed: {
@@ -102,37 +111,40 @@
 			}
 		},
 		async created() {
-			if(this.cateData && this.cateData.length == 0) {
-				await this.getCateData()
-			}
-			await this.getProductData({p:1})
-			this.ls_arr = this.optData.options[this.curCompOptActive.index].data
 			
-			this.handleChecked()
+			// this.handleChecked()
 		},
-		mounted() {
+		async mounted() {
+			await this.getData()
+			this.handleChecked()
 		},
 		methods: {
 			...mapMutations(['changeOptData', 'delOptData', 'addnewData', 'updateSort', 'updateProps']),
 			...mapActions(['getCateData', 'getProductData']),
+			async getData() {
+				this.loading = true;
+				let res = await this.$http.get('diy_home_shop_product', {
+					params: {
+						login: this.login,
+						p: this.curP
+					}
+				})
+				this.loading = false;
+				if(res.data.code != 1) return;
+				this.p_list = res.data.list
+				this.pagesCount = Number(res.data.pages)
+				this.Totalcount = Number(res.data.count)
+			},
 			async refresh() {
 				this.isTreeChange = true
 				this.curP = 1
-				await this.getProductData({cate: this.curCate, p: this.curP})
-				this.handleChecked()
-			},
-			async handleNodeClick(obj, node, el) {
-				this.curP = 1;
-				this.curCate = obj.id
-				this.isTreeChange = true
-				await this.getProductData({cate: obj.id, p:1})
-				// this.ls_arr = Array.from(new Set([...this.ls_arr, ...this.multipleSelection]))
+				await this.getData()
 				this.handleChecked()
 			},
 			handleChecked() {
 				this.$nextTick(() => {
-					this.ls_arr.forEach(row => {
-						let el =this.tableData.list.find((item) =>  item.id == row.id )
+					this.curData.forEach(row => {
+						let el =this.p_list.find((item) =>  item.id == row.id )
 						if(el) {
 							this.$refs.multipleTable.toggleRowSelection( el, true);
 						}
@@ -140,8 +152,16 @@
 					})
 				})
 			},
-			handleSelectUser() {
-				this.isTreeChange = false
+			handleSelectUser(selection, row) {
+				if(selection.length > 2) {
+					this.$nextTick(() => {
+						this.$refs.multipleTable.toggleRowSelection( row, false);
+						uni.showToast({
+							icon:"none",
+							title: '至多配置2个推荐显示'
+						})
+					})
+				}
 			},
 			handleSelectionChange(val) {
 				if(val.length < this.multipleSelection.length && !this.isTreeChange) {
@@ -163,15 +183,18 @@
 				return [ ...arr, ...arr1]
 			},
 			handleUpadteData() {
-				this.updateProps({
-					data: this.ls_arr
+				this.changeOptData({
+					index: this.curActive,
+					data: {
+						data: this.ls_arr
+					}
 				})
 				this.$emit("tableExit")
+				this.p_list = []
 			},
 			async handleChangePage(p) {
-				this.isTreeChange = true
 				this.curP = p
-				await this.getProductData({cate: this.curCate, p})
+				await this.getData()
 				this.handleChecked()
 			}	
 		}
@@ -183,7 +206,11 @@
 		padding: 20px 0;
 	}
 	.style-popup {
-	
+		.el-table {
+			/deep/ .header-row th:first-child .cell {
+				display: none!important;
+			}
+		}
 		.popup-title {
 			height: 50px;
 			padding: 0 20px;
@@ -208,11 +235,14 @@
 				border-right: 1rpx solid #f8f8f8;
 			}
 			.item-right {
-				width: calc(100% - 480rpx);
-				flex: 0 0 calc(100% - 480rpx);
+				flex: 1;
+				width: 100%;
 				padding: 20rpx;
 				height: 100%;
 				overflow-y: auto;
+				.el-table {
+					min-height: 300px;
+				}
 			}
 		}
 	}

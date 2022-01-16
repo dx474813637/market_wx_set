@@ -5,7 +5,12 @@ export const actions = {
 	async getCateData({ commit, state }) { //
 		const res = await http.get(`${state.ajaxBaseUrl}diy_home_product_cate`)
 		
-		commit("updateCateData", res.data.list)
+		commit("updateCateData", [{ id: '', label: '全部'}, ...res.data.list])
+	},
+	async getNewsData({ commit, state }) { //
+		const res = await http.get(`${state.ajaxBaseUrl}diy_home_news_cate`)
+		
+		commit("updateNewsCate", [{ id: '', label: '全部'}, ...res.data.list])
 	},
 	async getProductData({ commit, state }, data={}) {
 		const res = await http.get(`${state.ajaxBaseUrl}diy_home_product`, {params: data})

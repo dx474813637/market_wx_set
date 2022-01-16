@@ -7,6 +7,13 @@
 				<el-radio v-model="style" label="2">列表</el-radio>
 			</view>
 		</view>
+		<view class="menu-options-row u-flex u-col-top" v-if="style == '1'">
+			<view class="item-label u-padding-top-20">列数</view>
+			<view class="item-content u-flex">
+				<el-radio v-model="col_num" label="2">2列</el-radio>
+				<el-radio v-model="col_num" label="3">3列</el-radio>
+			</view>
+		</view>
 		<!-- <view class="menu-options-row u-flex u-col-top">
 			<view class="item-label u-padding-top-20">选择分类</view>
 			<view class="item-content u-flex u-flex-1">
@@ -80,6 +87,7 @@
 			return {
 				curActive: -1,
 				style: "1",
+				col_num: "2",
 				show_bar: "1",
 				show: false,
 				uploadUrl: "http://www.example.com/upload",
@@ -101,6 +109,7 @@
 		},
 		async created() {
 			this.style = this.optData.options[this.curCompOptActive.index].style
+			this.col_num = this.optData.options[this.curCompOptActive.index].col_num
 			this.show_bar = this.optData.options[this.curCompOptActive.index].show_bar
 			if(this.cateData && this.cateData.length == 0) {
 				await this.getCateData()
@@ -110,6 +119,11 @@
 			style(newv) {
 				this.updateProps({
 					style: newv
+				})
+			},
+			col_num(newv) {
+				this.updateProps({
+					col_num: newv
 				})
 			},
 			show_bar(newv) {
@@ -238,6 +252,7 @@
 							height: 80rpx;
 							cursor: move;
 							border-radius: 8rpx;
+							border: 1px solid #eee;
 						}
 					}
 				}

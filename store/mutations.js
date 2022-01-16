@@ -155,7 +155,12 @@ export const mutations = {
 	updateCateData(state, data) {
 		state.cateData = data
 	},
+	updateNewsCate(state, data) {
+		state.newsCate = data
+	},
 	updateProductData(state, data) {
+		data.count = Number(data.count)
+		data.pages = Number(data.pages)
 		state.product_data = data
 	},
 	updateRichtextData(state, data) {
@@ -192,7 +197,8 @@ export const mutations = {
 		} else if (name == 'menu') {
 			Object.assign(obj, {
 				col: "4",
-				shape: "square"
+				shape: "square",
+				isWrap: 'wrap',
 			})
 			for (let i = 0; i < 8; i++) {
 				obj.data.push({
@@ -226,6 +232,7 @@ export const mutations = {
 			Object.assign(obj, {
 				type: "productTabs",
 				style: "1",
+				col_num: "2",
 				show_bar: "1",
 				activeColor: "#2979ff",
 				inactiveColor: "#303133",
@@ -239,6 +246,7 @@ export const mutations = {
 			Object.assign(obj, {
 				type: "productDiy",
 				style: "1",
+				col_num: "2",
 				list_bg_color: "#f8f8f8",
 				buy_btn_color: "#2979ff",
 				dataId: "",
@@ -280,6 +288,34 @@ export const mutations = {
 				type: "richtext",
 				dataId: null,
 				data: ""
+			})
+		} else if (name == 'shopDiy') {
+			Object.assign(obj, {
+				type: "shopDiy",
+				list_bg_color: '#f8f8f8',
+				data: []
+			})
+		} else if( name == 'news') {
+			Object.assign(obj, {
+				type: "news",
+				show_bar: "1",
+				activeColor: "#2979ff",
+				inactiveColor: "#303133",
+				tabs_bg_color: "",
+				list_bg_color: "#f8f8f8",
+				tabsId: [],
+				tabs: []
+			})
+		} else if( name == 'hq') {
+			Object.assign(obj, {
+				type: "hq",
+				show_bar: "1",
+				activeColor: "#2979ff",
+				inactiveColor: "#303133",
+				tabs_bg_color: "",
+				list_bg_color: "#f8f8f8",
+				tabsId: [],
+				tabs: []
 			})
 		}
 		

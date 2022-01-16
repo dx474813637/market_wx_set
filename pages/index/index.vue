@@ -42,7 +42,7 @@
 			}
 		},
 		onLoad() {
-			this.$http.get('http://market.netsun.testwebsite.cn/Index/diy_home_product', {params: {p: 1}})
+			// this.$http.get('http://market.netsun.testwebsite.cn/Index/diy_home_product', {params: {p: 1}})
 			
 		},
 		computed: {

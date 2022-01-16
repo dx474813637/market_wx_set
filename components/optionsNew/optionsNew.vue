@@ -1,24 +1,17 @@
 <template>
 	<view class="ww">
 		<view class="menu-options-row u-flex u-col-top">
-			<view class="item-label u-padding-top-20">布局样式</view>
+			<view class="item-label u-padding-top-20">tabs滑块</view>
 			<view class="item-content u-flex">
-				<el-radio v-model="style" label="1">宫格</el-radio>
-				<el-radio v-model="style" label="2">列表</el-radio>
-			</view>
-		</view>
-		<view class="menu-options-row u-flex u-col-top" v-if="style == '1'">
-			<view class="item-label u-padding-top-20">列数</view>
-			<view class="item-content u-flex">
-				<el-radio v-model="col_num" label="2">2列</el-radio>
-				<el-radio v-model="col_num" label="3">3列</el-radio>
+				<el-radio v-model="show_bar" label="1">显示</el-radio>
+				<el-radio v-model="show_bar" label="0">不显示</el-radio>
 			</view>
 		</view>
 		<view class="menu-options-row u-flex u-col-top">
 			<view class="item-label u-padding-top-20">选择分类</view>
 			<view class="item-content u-flex u-flex-1">
 				<el-cascader 
-					:options="cateData" 
+					:options="newsCate" 
 					:props="{ multiple: true, checkStrictly: true, value: 'id' }" 
 					clearable
 					:show-all-levels="false"
@@ -27,13 +20,6 @@
 					v-model="selectArr"
 				>
 				</el-cascader>
-			</view>
-		</view>
-		<view class="menu-options-row u-flex u-col-top">
-			<view class="item-label u-padding-top-20">tabs滑块</view>
-			<view class="item-content u-flex">
-				<el-radio v-model="show_bar" label="1">显示</el-radio>
-				<el-radio v-model="show_bar" label="0">不显示</el-radio>
 			</view>
 		</view>
 		<view class="menu-options-row u-flex">
@@ -72,15 +58,6 @@
 					@change="changelistbgColor"></el-color-picker>
 			</view>
 		</view>
-		<view class="menu-options-row u-flex">
-			<view class="item-label">按钮颜色</view>
-			<view class="item-content u-flex u-flex-wrap">
-				<u-input :value="optData.options[curCompOptActive.index].buy_btn_color" border @input="changebtnColor"
-					type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].buy_btn_color"
-					@change="changebtnColor"></el-color-picker>
-			</view>
-		</view>
 
 	</view>
 </template>
@@ -92,41 +69,27 @@
 		mapActions
 	} from "vuex"
 	export default {
-		name: "optionsTabs",
+		name: "optionsNew",
 		data() {
 			return {
 				curActive: -1,
-				style: "1",
-				col_num: "2",
 				show_bar: "1",
 				uploadUrl: "http://www.example.com/upload",
 				selectArr: []
 			};
 		},
 		computed: {
-			...mapState(['curCompOptActive', 'optData', 'cateData', 'ajaxBaseUrl']),
+			...mapState(['curCompOptActive', 'optData', 'newsCate', 'ajaxBaseUrl']),
 		},
 		async created() {
-			this.style = this.optData.options[this.curCompOptActive.index].style
-			this.col_num = this.optData.options[this.curCompOptActive.index].col_num
 			this.show_bar = this.optData.options[this.curCompOptActive.index].show_bar
 			this.selectArr = this.optData.options[this.curCompOptActive.index].tabsId
-			if(this.cateData && this.cateData.length == 0) {
-				await this.getCateData()
+			if(this.newsCate && this.newsCate.length == 0) {
+				await this.getNewsData()
 			}
 			
 		},
 		watch: {
-			style(newv) {
-				this.updateProps({
-					style: newv
-				})
-			},
-			col_num(newv) {
-				this.updateProps({
-					col_num: newv
-				})
-			},
 			show_bar(newv) {
 				this.updateProps({
 					show_bar: newv
@@ -135,7 +98,7 @@
 		},
 		methods: {
 			...mapMutations(['changeOptData', 'delOptData', 'addnewData', 'updateSort', 'updateProps']),
-			...mapActions(['getCateData']),
+			...mapActions(['getNewsData']),
 			changeActiveColor(event) {
 				this.updateProps({
 					activeColor: event
@@ -191,7 +154,7 @@
 				let p_arr = []
 				tabs_arr.forEach(async (ele, index) => {
 					let id = ele[ele.length - 1];
-					let name = this.cateData
+					let name = this.newsCate
 					ele.forEach((item, i) => {
 						name = name.filter(e => e.id == item)[0]
 						if(i == ele.length - 1) {
@@ -200,13 +163,13 @@
 							name = name.children
 						}
 					})
-					p_arr.push(this.$http.get(`${this.ajaxBaseUrl}diy_home_product`, {params: {cate: id, p: 1}}))
+					p_arr.push(this.$http.get(`${this.ajaxBaseUrl}diy_home_news`, {params: {cate: id, p: 1}}))
 					data.push({ name, data: []})
 					
 				})
 				let res = await Promise.all(p_arr)
 				res.forEach((ele, index) => {
-					data[index].data = ele.data.list
+					data[index].data = ele.data.list.slice(0, 5)
 				})
 				this.updateProps({
 					tabs: data

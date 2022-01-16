@@ -239,20 +239,20 @@
 				if(event != this.optData.options[this.curCompOptActive.index].top_box_img){ 
 					this.$refs.uploadTopBoxPic.clear()
 				}
-				this.updateProps({
+				this.updatePageOpt({
 					top_box_img: event,
 				})
 			},
 			handlePicSuccess(data, index, lists) {
 				if(data.code == 1) {
 					this.$refs.uploadTopBoxPic.clear()
-					this.updateProps({
+					this.updatePageOpt({
 						top_box_img: data.url,
 					})
 				}
 			},
 			handleRemoveUrl(index, lists) {
-				this.updateProps({
+				this.updatePageOpt({
 					top_box_img: "",
 				})
 			},

@@ -13,6 +13,7 @@ const store = new Vuex.Store({
 		activeIndex: 0,
 		optData: data || {},
 		cateData: [],
+		newsCate: [],
 		coupon_data: {},
 		product_data: {},
 		richtext_data: {},

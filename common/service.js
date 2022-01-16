@@ -4,7 +4,7 @@ import Request from './luch-request/index.js'
 
 const http = new Request()
 http.setConfig((config) => { /* 设置全局配置 */
-	config.baseURL = 'http://market.netsun.testwebsite.cn/' /* 根域名不同 */
+	config.baseURL = 'http://market.netsun.testwebsite.cn/Index/' /* 根域名不同 */
 	config.header = {
 		...config.header,
 		'content-type': 'application/x-www-form-urlencoded',

@@ -23,6 +23,10 @@ export const typeToName = {
 		label: "自定义商品",
 		icon: "shangpin",
 	},
+	shopDiy: {
+		label: "自定义店铺",
+		icon: "shangpin",
+	},
 	coupon: {
 		label: "优惠券",
 		icon: "youhuiquan",
@@ -79,7 +83,11 @@ export const diyComponents = [{
 	},
 	{
 		type: "其他",
-		children: [{
+		children: [
+			{
+				name: 'shopDiy'
+			},
+			{
 				name: "coupon",
 			},
 			{

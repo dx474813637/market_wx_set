@@ -10,10 +10,11 @@
 			<view class="item u-line-1">{{optData.name}}</view>
 		</view>
 		 
-		<view class="top-box" v-if="optData.top_box_flag" :style="{
+		<view class="top-box" v-if="optData.top_box_flag > 0" :style="{
 			'height': optData.top_box_height + 'rpx',
 			'border-radius': `0 0 ${optData.top_box_radius}% ${optData.top_box_radius}%`,
-			'background': optData.top_box_color,
+			'background': optData.top_box_flag == '3' ? `url(${optData.top_box_img})` : 
+			(optData.top_box_flag == '2' ?`linear-gradient(${optData.top_box_color_rotate}deg, ${optData.top_box_color}, ${optData.top_box_color2})`: optData.top_box_color),
 		}"></view>
 		
 		<view class="ww" id="list">
@@ -233,7 +234,11 @@
 							}"
 							v-if="item.tabs[current].data && item.tabs[current].data.length > 0"
 						>
-							<view class="item u-padding-8" v-for="(ele, index) in item.tabs[current].data" :key="ele.id">
+							<view class="item u-padding-8"
+								:class="{
+									'col-3': item.col_num == '3'
+								}"
+							 v-for="(ele, index) in item.tabs[current].data" :key="ele.id">
 								<view class="p-card u-flex">
 									<view class="p-img-wrap">
 										<view class="p-img">
@@ -277,7 +282,11 @@
 								backgroundColor: item.list_bg_color || '#f8f8f8'
 							}"
 						>
-							<view class="item u-padding-8" v-for="(ele, index) in item.data" :key="ele.id">
+							<view class="item u-padding-8"
+								:class="{
+									'col-3': item.col_num == '3'
+								}"
+							 v-for="(ele, index) in item.data" :key="ele.id">
 								<view class="p-card u-flex">
 									<view class="p-img-wrap">
 										<view class="p-img">
@@ -307,6 +316,79 @@
 						<u-empty text="请选择分类,生成分类选项卡" mode="list"></u-empty>
 					</view>
 				</template>
+				<template v-if="item.type == 'shopDiy'">
+					<scroll-view scroll-x class="shop-wrapper" v-if="item.data && item.data.length > 0">
+						<view class="shop-rows u-flex" 
+							:style="{
+								background: item.list_bg_color
+							}"
+						>
+							<view class="item-row"
+								v-for="(ele, index) in item.data"
+								:key="ele.id"
+							>
+								<view class="shop-card">
+									<view class="shop-card-header u-flex u-row-around"
+										:style="{
+											color: ele.header_color,
+											background: ele.header_bg_style == '3' ? `url(${ele.header_bg_src})` : (ele.header_bg_style == '2' ?`linear-gradient(to right, ${ele.header_bg}, ${ele.header_bg2})`: ele.header_bg),
+										}"
+									>
+										<view class="item-left">
+											<view class="img-wrapper">
+												<u-image 
+													width="100%"
+													height="100%"
+													:src="ele.logo"
+												></u-image>
+											</view>
+										</view>
+										<view class="item-right">
+											<view class="info-name u-line-1">{{ele.name}}</view>
+											<view class="info-tags u-flex">
+												<view 
+													class="item-tag"
+													v-for="(tag, tag_i) in ele.tag"
+													:key="tag_i"
+													:style="{
+														color: ele.tag_color,
+														backgroundColor: ele.tag_color_bg,
+													}"
+												>{{tag}}</view>
+											</view>
+										</view>
+									</view>
+									<view class="shop-card-content">
+										<view class="s-p-list">
+											<view class="item u-padding-8" v-for="(prod) in ele.data" :key="prod.id">
+												<view class="p-card u-flex">
+													<view class="p-img-wrap">
+														<view class="p-img">
+															<image width="100%" height="100%" mode="aspectFill" :src="prod.pic1" >
+														</view>
+													</view>
+													
+													<view class="p-content">
+														<view class="p-name u-line-2 " >{{prod.name}}</view>
+														<view class="p-bottom u-flex u-row-between">
+															<view class="item-left"></view>
+															<view class="item-right">￥{{prod.price}}</view>
+														</view>
+													</view>
+													
+												</view>
+											</view>
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+					</scroll-view>
+					<view v-else>
+						<u-empty text="请先搜索店铺名,并设置其配置项" mode="list"></u-empty>
+					</view>
+				</template>
+				
 				<template v-if="item.type == 'coupon'">
 					<view class="product-wrapper" v-if="item.data && item.data.length > 0">
 						<view
@@ -401,6 +483,85 @@
 					</view>
 					
 				</template>
+				
+				
+				<template v-if="item.type == 'news'">
+					<view class="news-wrapper" v-if="item.tabs && item.tabs.length > 0">
+						<view class="news-tabs">
+							<u-tabs 
+								:list="item.tabs | filterTabs" 
+								is-scroll 
+								:current="currentNews"
+								:active-color="item.activeColor || '#2979ff'"
+								:inactive-color="item.inactiveColor || '#303133'"
+								:showBar="item.show_bar == 1? true : false"
+								:bgColor="item.tabs_bg_color || 'transparent'"
+								@change="handleChangeNewsIndex"
+							></u-tabs>
+						</view>
+						<view
+							class="news-list u-padding-8" 
+							:style="{
+								backgroundColor: item.list_bg_color || '#f8f8f8'
+							}"
+							v-if="item.tabs[currentNews].data && item.tabs[currentNews].data.length > 0"
+						>
+							<view class="item u-p-6 " v-for="(ele, index) in item.tabs[currentNews].data" :key="ele.id">
+								<view class="news-card">
+									<view class="news-content">
+										<view class="news-name u-line-1 u-font-30">{{ele.title}}</view>
+										<view class="news-bottom u-flex u-row-between">
+											<view class="item-left">{{ele.source}}</view>
+											<view class="item-right">{{ele.dtime}}</view>
+										</view>
+									</view>
+									
+								</view>
+							</view>
+						</view>
+					</view>
+					<view v-else>
+						<u-empty text="请选择资讯分类,生成分类选项卡" mode="list"></u-empty>
+					</view>
+				</template>
+				
+				<template v-if="item.type == 'hq'">
+					<view class="news-wrapper" v-if="item.tabs && item.tabs.length > 0">
+						<view class="news-tabs">
+							<u-tabs 
+								:list="item.tabs | filterTabs2" 
+								is-scroll 
+								:current="currentHq"
+								:active-color="item.activeColor || '#2979ff'"
+								:inactive-color="item.inactiveColor || '#303133'"
+								:showBar="item.show_bar == 1? true : false"
+								:bgColor="item.tabs_bg_color || 'transparent'"
+								@change="handleChangeHqIndex"
+							></u-tabs>
+						</view>
+						<view
+							class="news-list u-padding-8" 
+							:style="{
+								backgroundColor: item.list_bg_color || '#f8f8f8'
+							}"
+							v-if="item.tabs[currentHq].imgSrc"
+						>
+							<view class="item u-p-6 ">
+								<view class="news-card">
+									<u-image
+										width="100%"
+										height="350"
+										mode="widthFix"
+										:src="item.tabs[currentHq].imgSrc"
+									></u-image>
+								</view>
+							</view>
+						</view>
+					</view>
+					<view v-else>
+						<u-empty text="请搜索行情关键字,并加入生成分类选项卡" mode="list"></u-empty>
+					</view>
+				</template>
 			</view>
 		</view>
 	</view>
@@ -414,6 +575,8 @@
 		data() {
 			return {
 				current: 0,
+				currentNews: 0,
+				currentHq: 0,
 				demo: "",
 				vueThis: this,
 			};
@@ -425,6 +588,7 @@
 			...mapState(['curCompOptActive', 'optData']),
 		},
 		created() {
+			// this.$http.get('ppi_search', {params: {name: 'PP'}})
 			// console.log(this.opt)
 		},
 		filters: {
@@ -432,7 +596,12 @@
 				return v.map(ele => {
 					return {name: ele.name}
 				})
-			}
+			},
+			filterTabs2(v) {
+				return v.map(ele => {
+					return {name: ele.pname}
+				})
+			},
 		},
 		methods: {
 			...mapMutations(['changeCurComp', 'delCptData', 'changeCptSort']),
@@ -444,6 +613,9 @@
 			},
 			handleDelCpt(i) {
 				this.delCptData(i)
+			},
+			handleChangeNewsIndex(index) {
+				
 			},
 			handleChangeIndex(index) {
 				// this.current = index
@@ -497,6 +669,9 @@
 			width: 100%;
 			z-index: 1;
 			transform: scaleX(1.5);
+			background-size: 100% 100%!important;
+			background-position: center!important;
+			background-repeat: no-repeat!important;
 		}
 	}
 	.ww {
@@ -740,6 +915,7 @@
 							}
 							.p-sub {
 								color: #999;
+								height: 20px;
 							}
 							.p-bottom {
 								height: 60rpx;
@@ -806,6 +982,23 @@
 					&.list1 .item {
 						flex: 0 0 50%;
 						width: 50%;
+						&.col-3 {
+							flex: 0 0 33.3%;
+							width: 33.3%;
+							.p-card {
+								.p-name {
+									font-size: 14px;
+								}
+								.p-sub {
+									font-size: 12px;
+									margin-bottom: 0;
+								}
+								.p-content {
+									height: 80px;
+									padding: 2px 6px;
+								}
+							}
+						}
 						.p-card {
 							width: 100%;
 							flex-direction: column;
@@ -881,6 +1074,121 @@
 									padding-right: 20rpx;
 								}
 							}
+						}
+					}
+				}
+			}
+			.shop-wrapper {
+				// padding: 10px 0;
+				.shop-rows {
+					padding: 20px 10px;
+					background-color: #f8f8f8;
+					.item-row {
+						margin-right: 20px;
+						.shop-card {
+							width: 280px;
+							height: 240px;
+							background-color: #fff;
+							border-radius: 8px;
+							overflow: hidden;
+							.shop-card-header {
+								height: 60px;
+								background-color: #eee;
+								padding: 0 10px;
+								.item-left {
+									flex: 0 0 70px;
+									width: 70px;
+									height: 40px;
+									display: flex;
+									justify-content: center;
+									align-items: center;
+									background-color: #fff;
+									border-radius: 18px;
+									.img-wrapper {
+										width: 50px;
+										height: 25px;
+										
+									}
+								}
+								.item-right {
+									padding-left: 5px;
+									flex: 0 0 calc(100% - 80px);
+									width: calc(100% - 80px);
+									.info-name {
+										margin-bottom: 3px;
+									}
+									.info-tags {
+										font-size: 12px;
+										.item-tag {
+											color: #fff;
+											background-color: #804ED1;
+											padding: 1px 5px;
+											border-radius: 3px;
+										}
+									}
+								}
+							}
+							.shop-card-content {
+								height: 180px;
+								.s-p-list {
+									height: 100%;
+									.item {
+										height: 50%;
+										.p-card {
+											height: 80px;
+											.p-img-wrap {
+												flex: 0 0 75px;
+												width: 75px;
+												height: 75px;
+												position: relative;
+												border: 1px solid #eee;
+												.p-img {
+													width: 100%;
+													height: 100%;
+													image {
+														width: 100%;
+														height: 100%;
+													}
+													
+												}
+											}
+											.p-content {
+												flex: 0 0 calc(100% - 75px);
+												width: calc(100% - 75px);
+												height: 75px;
+												padding-left: 10px;
+												.p-name {
+													font-size: 14px;
+													color: #333;
+													line-height: 20px;
+													min-height: 40px;
+													margin-bottom: 15px;
+												}
+												.p-bottom {
+													.item-right {
+														color: red;
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			.news-wrapper {
+				.news-list {
+					.news-card {
+						border-radius: 5px;
+						background-color: #fff;
+						padding: 8px;
+						.news-bottom {
+							color: #999;
+						}
+						.news-name {
+							line-height: 30px;
 						}
 					}
 				}
