@@ -4,7 +4,7 @@ import Request from './luch-request/index.js'
 
 const http = new Request()
 http.setConfig((config) => { /* 设置全局配置 */
-	config.baseURL = 'http://market.netsun.testwebsite.cn/Index/' /* 根域名不同 */
+	config.baseURL = 'http://market.netsun.testwebsite.cn/' /* 根域名不同 */
 	config.header = {
 		...config.header,
 		'content-type': 'application/x-www-form-urlencoded',
@@ -41,7 +41,11 @@ http.interceptors.response.use(async (response) => { /* 请求之后拦截器。
 	} 
 	return response
 }, (response) => { // 请求错误做点什么。可以使用async await 做异步操作
-	console.log(response)
+	// console.log(response)
+	uni.showToast({
+		title: response.errMsg,
+		icon: 'none'
+	})
 	return Promise.reject(response)
 })
 

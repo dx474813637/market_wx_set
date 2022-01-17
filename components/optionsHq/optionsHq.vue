@@ -95,6 +95,15 @@
 						</view>
 					</view>
 					<view class="box-content" v-if="!move">
+						<view class="citem u-flex">
+							<view class="citem-label">标题</view>
+							<view class="citem-main u-flex u-flex-wrap">
+								<view class="item-input u-flex">
+									<u-input :value="item.pname" @focus="jujiao(index)" border
+										@input="changePropPName" type="text" />
+								</view>
+							</view>
+						</view>
 						<view class="citem u-flex" >
 							<u-image 
 								width="100%"
@@ -164,7 +173,7 @@
 			async lookUpShop() {
 				this.s_loading = true
 				this.s_res = []
-				let res = await this.$http.get('ppi_search', {
+				let res = await this.$http.get('Index/ppi_search', {
 					params: {
 						name: this.kw
 					}
@@ -211,6 +220,13 @@
 				})
 				
 				
+			},
+			changePropPName(event) {
+				let tabs = this.optData.options[this.curCompOptActive.index].tabs
+				tabs[this.curActive].pname = event
+				this.updateProps({
+					tabs: tabs,
+				})
 			},
 			changelistbgColor(event) {
 				this.updateProps({

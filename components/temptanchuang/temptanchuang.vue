@@ -30,9 +30,9 @@
 		.ad {
 			width: 300px;
 			height: 500px;
-			background-color: #fff;
+			// background-color: #fff;
 			border-radius: 5px;
-			box-shadow: 0 0 10px rgba(0,0,0,.1);
+			// box-shadow: 0 0 10px rgba(0,0,0,.1);
 			padding: 25px 15px;
 			image {
 				width: 100%;

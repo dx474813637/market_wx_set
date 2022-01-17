@@ -3,35 +3,42 @@
 		<view class="menu-options-row u-flex u-col-top" style="height: auto;">
 			<view class="item-label u-p-t-16">搜索店铺</view>
 			<view class="item-content u-flex u-flex-wrap">
-				<u-input v-model="kw" @focus="s_input_focus = true" @blur="s_input_focus = false" border type="text" placeholder="输入关键字等待下方结果,选择并配置"  />
-				<view class="search-res-box u-flex u-flex-wrap"
-					:class="{
-						'u-row-center': s_loading || s_res.length == 0,
-						'u-col-top': s_res.length > 0
-					}"
-					v-if="kw.length > 0 || s_input_focus || s_res.length > 0"
-				>
-					<template v-if="s_loading">
-						<view>
-							<text>搜索中</text>
-							<i class="el-icon-loading"></i>
-						</view>
-					</template>
-					<template v-else-if="s_res.length == 0">
-						<u-empty text="请输入关键字" mode="list"></u-empty>
-					</template>
-					<template v-else-if="s_res.length > 0">
-						<view
-							v-for="(item, index) in s_res"
-							:key="index"
-							class="item"
-						>
-							<el-button type="primary" plain size="mini" icon="el-icon-circle-plus-outline" @click="addShop">{{item.name}}</el-button>
-						</view>
-					</template>
-					
-				</view>
+				<u-input v-model="kw" @focus="s_input_focus = true" @blur="s_input_focus = false" border type="text" placeholder="输入店铺login等待检索,选择并配置"  />
+				
 			</view>
+		</view>
+		<view class="search-res-box u-flex u-flex-wrap"
+			:class="{
+				'u-row-center': s_loading || s_res.length == 0,
+				'u-col-top': s_res.length > 0
+			}"
+			v-if="kw.length > 0 || s_input_focus || s_res.length > 0"
+		>
+			<template v-if="s_loading">
+				<view>
+					<text>搜索中</text>
+					<i class="el-icon-loading"></i>
+				</view>
+			</template>
+			<template v-else-if="s_res.length == 0">
+				<u-empty text="请输入关键字" mode="list"></u-empty>
+			</template>
+			<template v-else-if="s_res.length > 0">
+				<view
+					v-for="(item, index) in s_res"
+					:key="index"
+					class="item"
+				>
+					<el-button 
+						type="primary" 
+						plain 
+						size="mini" 
+						icon="el-icon-circle-plus-outline" 
+						@click="addShop(item)"
+					>{{item.name}}</el-button>
+				</view>
+			</template>
+			
 		</view>
 		<view class="menu-options-row u-flex">
 			<view class="item-label">列表背景颜色</view>
@@ -57,6 +64,38 @@
 						</view>
 					</view>
 					<view class="box-content" v-if="!move">
+						<view class="citem u-flex u-col-top" >
+							<view class="citem-label">店铺LOGO</view>
+							<view class="citem-main u-flex u-flex-wrap">
+								
+								<view class="item-input u-flex">
+									<u-input :value="item.picmy" @input="changeLogo" placeholder="输入网络地址或点击下方上传图片" border @focus="jujiao(index)" type="text" />
+								</view>
+								<u-upload 
+									:ref="`${curCompOptActive.type}upload${index}_logo`" 
+									:max-size="1 * 1024 * 1024" 
+									max-count="1" 
+									width="150" 
+									height="150"
+									:multiple="false" 
+									:action="uploadUrl" 
+									:file-list="item.picmy ? [{url: item.picmy}] : []"
+									@on-remove="handleRemoveLogo"
+									@on-success="handleLogoSuccess"
+									:index="index"
+								></u-upload>
+								<text class="warn">建议尺寸:75px * 75px</text>
+							</view>
+						</view>
+						<view class="citem u-flex">
+							<view class="citem-label">店铺名</view>
+							<view class="citem-main u-flex u-flex-wrap">
+								<view class="item-input u-flex">
+									<u-input :value="item.name" @focus="jujiao(index)" border
+										@input="changePropName" type="text" />
+								</view>
+							</view>
+						</view>
 						<view class="citem u-flex">
 							<view class="citem-label">文本颜色</view>
 							<view class="citem-main u-flex u-flex-wrap">
@@ -66,6 +105,37 @@
 									<el-color-picker class="u-m-l-10" :value="item.header_color" @active-change="jujiao(index)"
 										@change="changePropColor3"></el-color-picker>
 								</view>
+							</view>
+						</view>
+						<view class="citem u-flex u-col-top u-p-t-15 u-p-b-15">
+							<view class="citem-label" style="line-height: 35px;">标签组</view>
+							<view class="citem-main u-flex u-flex-wrap">
+								
+								<el-tag
+								  :key="tag"
+								  v-for="tag in item.tag"
+								  closable
+								  :disable-transitions="false"
+								  size="medium"
+								  @close="handleClose(tag, index)">
+								  {{tag}}
+								</el-tag>
+								<el-input
+								  class="input-new-tag"
+								  v-if="inputVisible"
+								  v-model="inputValue"
+								  ref="saveTagInput"
+								  size="mini"
+								  @focus="jujiao(index)"
+								  @keyup.enter.native="handleInputConfirm"
+								  @blur="handleInputConfirm"
+								>
+								</el-input>
+								<el-button v-else class="button-new-tag" size="mini" @click="showInput">+ 新增</el-button>
+								<!-- <view class="item-input">
+									<u-input :value="item.tag" @focus="jujiao(index)" border
+										@input="changePropTag" type="text" />
+								</view> -->
 							</view>
 						</view>
 						<view class="citem u-flex">
@@ -185,6 +255,11 @@
 		name: "optionsShopDiy",
 		mounted() {
 			this.initSortable()
+			// this.$http.get('Index/diy_home_shop_product', {
+			// 	params: {
+			// 		login: 'dsadas'
+			// 	}
+			// })
 		},
 		data() {
 			return {
@@ -196,7 +271,10 @@
 				login: '',
 				s_input_focus: false,
 				s_loading: false,
-				s_res: []
+				s_res: [],
+				dynamicTags: [],
+				inputVisible: false,
+				inputValue: ''
 			};
 		},
 		computed: {
@@ -204,6 +282,7 @@
 		},
 		watch: {
 			kw(n) {
+				
 				uni.$u.debounce(this.lookUpShop, 1600)
 			}
 		},
@@ -216,13 +295,59 @@
 		},
 		methods: {
 			...mapMutations(['changeOptData', 'delOptData', 'addnewData', 'updateSort', 'updateProps']),
-			lookUpShop() {
+			handleClose(tag, i) {
+				this.jujiao(i)
+				let tag_arr = this.optData.options[this.curCompOptActive.index].data[this.curActive].tag;
+				let index = tag_arr.findIndex(item => item == tag)
+				if(index == -1) return
+				tag_arr.splice(index, 1)
+			    this.changeOptData({
+			    	index: this.curActive,
+			    	data: {
+			    		tag: tag_arr
+			    	}
+			    })
+			},
+			
+			showInput() {
+				this.inputVisible = true;
+				this.$nextTick(() => {
+					
+				  this.$refs.saveTagInput[0].$refs.input.focus();
+				});
+			},
+		
+			handleInputConfirm() {
+				let inputValue = this.inputValue;
+				if (inputValue) {
+				  let tag_arr = this.optData.options[this.curCompOptActive.index].data[this.curActive].tag;
+				  tag_arr.push(inputValue)
+				  this.changeOptData({
+				  	index: this.curActive,
+				  	data: {
+				  		tag: tag_arr
+				  	}
+				  })
+				}
+				this.inputVisible = false;
+				this.inputValue = '';
+			},
+			async lookUpShop() {
+				if(!this.kw) {
+					this.s_res = []
+					return
+				}
 				this.s_loading = true
 				this.s_res = []
-				setTimeout(() => {
-					this.s_res = [{name: 'xiixhaha'}]
-					this.s_loading = false
-				}, 1000)
+				
+				let res = await this.$http.get('Index/diy_home_shop_product', {
+					params: {
+						login: this.kw,
+					}
+				})
+				this.s_loading = false
+				if(res.data.code != 1) return
+				this.s_res = [res.data.company]
 				
 			},
 			async initSortable() {
@@ -247,13 +372,11 @@
 					}
 				});
 			},
-			addShop() {
+			addShop(item) {
+				if(!item.picmy) item.picmy = 'http://market.netsun.testwebsite.cn/Public/Upload/diy/61e3935bdc488.png'
 				this.addnewData({
-					id: '23',
-					login: 'toocle3',
-					name: '网盛生意宝股份有限公司线上店铺2',
-					logo: 'http://market.netsun.testwebsite.cn/Public/Upload/diy/61e3935bdc488.png',
-					tag: ['限时直降'],
+					...item,
+					tag: ['好店推荐'],
 					tag_color: '#fff',
 					tag_color_bg: '#f90',
 					header_color: '#fff',
@@ -262,6 +385,9 @@
 					header_bg: '#aa55ff',
 					header_bg2: '#5555ff',
 					data: []
+				})
+				uni.showToast({
+					title: '添加成功。'
 				})
 			},
 			changeMenuLink(event) {
@@ -285,9 +411,20 @@
 					}
 				})
 			},
+			changePropName(event) {
+				this.changeOptData({
+					index: this.curActive,
+					data: {
+						name: event
+					}
+				})
+			},
 			changetitleColor(event) {
-				this.updateProps({
-					title_color: event
+				this.changeOptData({
+					index: this.curActive,
+					data: {
+						title_color: event
+					}
 				})
 			},
 			changeProphbs(event) {
@@ -358,15 +495,6 @@
 					}
 				})
 			},
-			delShopProdDiy(index1, index2, obj) {
-				obj.splice(index1, 1)
-				this.changeOptData({
-					index: index2,
-					data: {
-						data: obj
-					}
-				})
-			},
 			handlePicSuccess(data, index, lists, name) {
 				this.curActive = name
 				if(data.code == 1) {
@@ -378,6 +506,47 @@
 						}
 					})
 				}
+			},
+			changeLogo(event) {
+				if(event != this.optData.options[this.curCompOptActive.index].data[this.curActive].url){ 
+					this.$refs[`${this.curCompOptActive.type}upload${this.curActive}_logo`][0].clear()
+				}
+				this.changeOptData({
+					index: this.curActive,
+					data: {
+						picmy: event
+					}
+				})
+			},
+			handleRemoveLogo(index, lists, name) {
+				this.curActive = name
+				this.changeOptData({
+					index: this.curActive,
+					data: {
+						picmy: ""
+					}
+				})
+			},
+			handleLogoSuccess(data, index, lists, name) {
+				this.curActive = name
+				if(data.code == 1) {
+					this.$refs[`${this.curCompOptActive.type}upload${this.curActive}_logo`][0].clear()
+					this.changeOptData({
+						index: this.curActive,
+						data: {
+							picmy: data.url
+						}
+					})
+				}
+			},
+			delShopProdDiy(index1, index2, obj) {
+				obj.splice(index1, 1)
+				this.changeOptData({
+					index: index2,
+					data: {
+						data: obj
+					}
+				})
 			},
 			delMenuData(index) {
 				this.delOptData(index)
@@ -398,12 +567,28 @@
 </script>
 
 <style lang="scss" scoped>
+	.el-tag {
+	    margin-right: 10px;
+		margin-bottom: 5px;
+		margin-top: 5px;
+	}
+	.button-new-tag {
+		
+		margin-bottom: 5px;
+		margin-top: 5px;
+	}
+	.input-new-tag {
+		margin-bottom: 5px;
+		margin-top: 5px;
+	    width: 90px;
+	    vertical-align: bottom;
+	}
 	.el-slider,
 	.el-select {
 		width: 100%;
 	}
 	.search-res-box {
-		min-height: 150px;
+		min-height: 80px;
 		width: 100%;
 		margin: 10px auto;
 		border: 1px dashed $theme-bg-color;
@@ -497,7 +682,7 @@
 
 						.citem {
 							padding: 0 10px;
-							margin-bottom: 10px;
+							// margin-bottom: 10px;
 
 							&:last-child {
 								margin-bottom: 0;

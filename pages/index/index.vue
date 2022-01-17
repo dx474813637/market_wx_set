@@ -15,7 +15,7 @@
 				<view class="item-btn">
 					<el-button type="primary" size="small" @click="saveOptions">保存</el-button>
 				</view>
-				
+
 			</view>
 		</view>
 		<view class="wrapper-content u-flex">
@@ -27,14 +27,17 @@
 			</view>
 			<view class="item-right">
 				<componentOption></componentOption>
-				
+
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	import {mapState, mapMutations} from "vuex"
+	import {
+		mapState,
+		mapMutations
+	} from "vuex"
 	export default {
 		data() {
 			return {
@@ -43,12 +46,12 @@
 		},
 		onLoad() {
 			// this.$http.get('http://market.netsun.testwebsite.cn/Index/diy_home_product', {params: {p: 1}})
-			
+
 		},
 		computed: {
 			...mapState(['curCompOptActive', 'pageOptFlag', 'activeIndex', 'optData']),
 			pageOpt: {
-				get () {
+				get() {
 					return this.pageOptFlag;
 				},
 				set(value) {
@@ -59,8 +62,31 @@
 		},
 		methods: {
 			...mapMutations(['changeCurComp', 'changepageOptFlag']),
-			saveOptions() {
-				saveOptions(this.optData)
+			async saveOptions() {
+				this.$confirm('是否保存当前配置信息?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(async () => {
+					// console.log(this.optData)
+					uni.showLoading()
+					let res = await this.$http.post('Index/diy_save', {
+						str: JSON.stringify(this.optData)
+					})
+					uni.hideLoading()
+					if(res.data.code != 1) return
+					this.$message({
+						type: 'success',
+						message: '保存成功!'
+					});
+				}).catch(() => {
+					// this.$message({
+					// 	type: 'info',
+					// 	message: '已取消删除'
+					// });
+				});
+
+
 			}
 		}
 	}
@@ -69,33 +95,40 @@
 <style lang="scss" scoped>
 	.wrapper {
 		height: 100vh;
+
 		.wrapper-title {
 			height: 120rpx;
 			padding: 0 50rpx;
+
 			.item-left {
 				.title {
 					font-weight: bold;
 				}
 			}
+
 			.item-right {
 				.item-btn {
 					padding-left: 40rpx;
 				}
 			}
 		}
+
 		.wrapper-content {
 			height: calc(100% - 120rpx);
 			padding: 10rpx;
+
 			.item-left,
 			.item-right {
 				padding: 0 20rpx;
 			}
+
 			.item-left {
 				width: 600rpx;
 				flex: 0 0 600rpx;
 				height: 100%;
 				overflow-y: auto;
 			}
+
 			.item-center {
 				flex: 1;
 				flex-basis: 750rpx;
@@ -103,6 +136,7 @@
 				background-color: #F2F2F6;
 				border-radius: 12rpx;
 			}
+
 			.item-right {
 				width: 800rpx;
 				flex: 0 0 800rpx;

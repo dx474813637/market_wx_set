@@ -123,7 +123,7 @@
 			...mapActions(['getCateData', 'getProductData']),
 			async getData() {
 				this.loading = true;
-				let res = await this.$http.get('diy_home_shop_product', {
+				let res = await this.$http.get('Index/diy_home_shop_product', {
 					params: {
 						login: this.login,
 						p: this.curP

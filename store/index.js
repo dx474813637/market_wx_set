@@ -22,7 +22,7 @@ const store = new Vuex.Store({
 		previewWindow: null,
 		pageOptFlag: false,
 		keytime: "",
-		ajaxBaseUrl: "http://market.netsun.testwebsite.cn/Index/"
+		ajaxBaseUrl: ""
 	},
 	mutations,
 	actions

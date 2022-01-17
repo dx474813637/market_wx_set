@@ -163,7 +163,7 @@
 							name = name.children
 						}
 					})
-					p_arr.push(this.$http.get(`${this.ajaxBaseUrl}diy_home_news`, {params: {cate: id, p: 1}}))
+					p_arr.push(this.$http.get(`Index/diy_home_news`, {params: {cate: id, p: 1}}))
 					data.push({ name, data: []})
 					
 				})

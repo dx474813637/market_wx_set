@@ -223,45 +223,120 @@
 								@change="handleChangeIndex"
 							></u-tabs>
 						</view>
-						<view 
-							class="product-list u-flex u-flex-wrap u-padding-8" 
-							:class="{
-								list1: item.style == '1',
-								list2: item.style == '2'
-							}" 
-							:style="{
-								backgroundColor: item.list_bg_color || '#f8f8f8'
-							}"
-							v-if="item.tabs[current].data && item.tabs[current].data.length > 0"
-						>
-							<view class="item u-padding-8"
-								:class="{
-									'col-3': item.col_num == '3'
+						<template v-if="item.style == '1'">
+							<view
+								class="product-list u-flex u-flex-wrap u-padding-8 list1" 
+								:style="{
+									backgroundColor: item.list_bg_color || 'transparent'
 								}"
-							 v-for="(ele, index) in item.tabs[current].data" :key="ele.id">
-								<view class="p-card u-flex">
-									<view class="p-img-wrap">
-										<view class="p-img">
-											<image width="100%" height="100%" mode="aspectFill" :src="ele.pimage" >
+								:class="{
+									'scroll-rows': item.col_type == '2'
+								}"
+							>
+								<template v-if="item.col_type == '1'">
+									<view class="item u-padding-8"
+										:class="{
+											'col-3': item.col_num == '3'
+										}"
+										v-for="(ele, index) in item.tabs[current].data" 
+										:key="ele.id"
+									>
+										<view class="p-card u-flex">
+											<view class="p-img-wrap">
+												<view class="p-img">
+													<image width="100%" height="100%" mode="aspectFill" :src="ele.pimage" >
+												</view>
+											</view>
+											
+											<view class="p-content">
+												<view class="p-name u-line-1">{{ele.pname}}</view>
+												<view class="p-sub u-line-1">{{ele.psub}}</view>
+												<view class="p-bottom u-flex u-row-between">
+													<view class="item-left">￥{{ele.price}}</view>
+													<view class="item-right">
+														<u-button type="primary" shape="circle" size="mini" :custom-style="{background: item.buy_btn_color}">
+															<u-icon name="shopping-cart"></u-icon>
+														</u-button>
+													</view>
+												</view>
+											</view>
+											
 										</view>
 									</view>
-									
-									<view class="p-content">
-										<view class="p-name u-line-1">{{ele.pname}}</view>
-										<view class="p-sub u-line-1">{{ele.psub}}</view>
-										<view class="p-bottom u-flex u-row-between">
-											<view class="item-left">￥{{ele.price}}</view>
-											<view class="item-right">
-												<u-button type="primary" shape="circle" size="mini" :custom-style="{background: item.buy_btn_color}">
-													<u-icon name="shopping-cart"></u-icon>
-												</u-button>
+								</template>
+								<template v-else-if="item.col_type == '2'">
+									<scroll-view scroll-x>
+										<view class="u-flex">
+											<view
+												class="item u-padding-8"
+												v-for="(ele, index) in item.tabs[current].data" 
+												:key="ele.id"
+											>
+												<view class="p-card u-flex">
+													<view class="p-img-wrap">
+														<view class="p-img">
+															<image width="100%" height="100%" mode="aspectFill" :src="ele.pimage" >
+														</view>
+													</view>
+													
+													<view class="p-content">
+														<view class="p-name u-line-1">{{ele.pname}}</view>
+														<view class="p-sub u-line-1">{{ele.psub}}</view>
+														<view class="p-bottom u-flex u-row-between">
+															<view class="item-left">￥{{ele.price}}</view>
+															<view class="item-right">
+																<u-button type="primary" shape="circle" size="mini" :custom-style="{background: item.buy_btn_color}">
+																	<u-icon name="shopping-cart"></u-icon>
+																</u-button>
+															</view>
+														</view>
+													</view>
+													
+												</view>
 											</view>
 										</view>
-									</view>
+										
+									</scroll-view>
 									
+								</template>
+								
+							</view>
+						</template>
+						<template v-else-if="item.style == '2'">
+							<view
+								class="product-list u-flex u-flex-wrap list2" 
+								:style="{
+									backgroundColor: item.list_bg_color || 'transparent'
+								}" 
+								:class="{
+									noPic: item.isPic == '2',
+								}"
+							>
+								<view class="item" v-for="(ele, index) in item.tabs[current].data" :key="ele.id">
+									<view class="p-card u-flex">
+										<view class="p-img-wrap">
+											<view class="p-img">
+												<image width="100%" height="100%" mode="aspectFill" :src="ele.pimage" >
+											</view>
+										</view>
+										
+										<view class="p-content">
+											<view class="p-name u-line-1">{{ele.pname}}</view>
+											<view class="p-sub u-line-1">{{ele.psub}}</view>
+											<view class="p-bottom u-flex u-row-between">
+												<view class="item-left">￥{{ele.price}}</view>
+												<view class="item-right">
+													<u-button type="primary" shape="circle" size="mini" :custom-style="{background: item.buy_btn_color}">
+														<u-icon name="shopping-cart"></u-icon>
+													</u-button>
+												</view>
+											</view>
+										</view>
+										
+									</view>
 								</view>
 							</view>
-						</view>
+						</template>
 						
 					</view>
 					<view v-else>
@@ -272,48 +347,125 @@
 				
 				<template v-if="item.type == 'productDiy'">
 					<view class="product-wrapper" v-if="item.data && item.data.length > 0">
-						<view 
-							class="product-list u-flex u-flex-wrap u-padding-8" 
-							:class="{
-								list1: item.style == '1',
-								list2: item.style == '2'
-							}" 
-							:style="{
-								backgroundColor: item.list_bg_color || '#f8f8f8'
-							}"
-						>
-							<view class="item u-padding-8"
-								:class="{
-									'col-3': item.col_num == '3'
+						<template v-if="item.style == '1'">
+							<view
+								class="product-list u-flex u-flex-wrap u-padding-8 list1" 
+								:style="{
+									backgroundColor: item.list_bg_color || 'transparent'
 								}"
-							 v-for="(ele, index) in item.data" :key="ele.id">
-								<view class="p-card u-flex">
-									<view class="p-img-wrap">
-										<view class="p-img">
-											<image width="100%" height="100%" mode="aspectFill" :src="ele.pimage" >
+								:class="{
+									'scroll-rows': item.col_type == '2'
+								}"
+							>
+								<template v-if="item.col_type == '1'">
+									<view class="item u-padding-8"
+										:class="{
+											'col-3': item.col_num == '3'
+										}"
+										v-for="(ele, index) in item.data" 
+										:key="ele.id"
+									>
+										<view class="p-card u-flex">
+											<view class="p-img-wrap">
+												<view class="p-img">
+													<image width="100%" height="100%" mode="aspectFill" :src="ele.pimage" >
+												</view>
+											</view>
+											
+											<view class="p-content">
+												<view class="p-name u-line-1">{{ele.pname}}</view>
+												<view class="p-sub u-line-1">{{ele.psub}}</view>
+												<view class="p-bottom u-flex u-row-between">
+													<view class="item-left">￥{{ele.price}}</view>
+													<view class="item-right">
+														<u-button type="primary" shape="circle" size="mini" :custom-style="{background: item.buy_btn_color}">
+															<u-icon name="shopping-cart"></u-icon>
+														</u-button>
+													</view>
+												</view>
+											</view>
+											
 										</view>
 									</view>
-									
-									<view class="p-content">
-										<view class="p-name u-line-1">{{ele.pname}}</view>
-										<view class="p-sub u-line-1">{{ele.psub}}</view>
-										<view class="p-bottom u-flex u-row-between">
-											<view class="item-left">￥{{ele.price}}</view>
-											<view class="item-right">
-												<u-button type="primary" shape="circle" size="mini" :custom-style="{background: item.buy_btn_color}">
-													<u-icon name="shopping-cart"></u-icon>
-												</u-button>
+								</template>
+								<template v-else-if="item.col_type == '2'">
+									<scroll-view scroll-x>
+										<view class="u-flex">
+											<view
+												class="item u-padding-8"
+												v-for="(ele, index) in item.data" 
+												:key="ele.id"
+											>
+												<view class="p-card u-flex">
+													<view class="p-img-wrap">
+														<view class="p-img">
+															<image width="100%" height="100%" mode="aspectFill" :src="ele.pimage" >
+														</view>
+													</view>
+													
+													<view class="p-content">
+														<view class="p-name u-line-1">{{ele.pname}}</view>
+														<view class="p-sub u-line-1">{{ele.psub}}</view>
+														<view class="p-bottom u-flex u-row-between">
+															<view class="item-left">￥{{ele.price}}</view>
+															<view class="item-right">
+																<u-button type="primary" shape="circle" size="mini" :custom-style="{background: item.buy_btn_color}">
+																	<u-icon name="shopping-cart"></u-icon>
+																</u-button>
+															</view>
+														</view>
+													</view>
+													
+												</view>
 											</view>
 										</view>
-									</view>
+										
+									</scroll-view>
 									
+								</template>
+								
+							</view>
+						</template>
+						<template v-else-if="item.style == '2'">
+							<view
+								class="product-list u-flex u-flex-wrap list2" 
+								:style="{
+									backgroundColor: item.list_bg_color || 'transparent'
+								}" 
+								:class="{
+									noPic: item.isPic == '2',
+								}"
+							>
+								<view class="item" v-for="(ele, index) in item.data" :key="ele.id">
+									<view class="p-card u-flex">
+										<view class="p-img-wrap">
+											<view class="p-img">
+												<image width="100%" height="100%" mode="aspectFill" :src="ele.pimage" >
+											</view>
+										</view>
+										
+										<view class="p-content">
+											<view class="p-name u-line-1">{{ele.pname}}</view>
+											<view class="p-sub u-line-1">{{ele.psub}}</view>
+											<view class="p-bottom u-flex u-row-between">
+												<view class="item-left">￥{{ele.price}}</view>
+												<view class="item-right">
+													<u-button type="primary" shape="circle" size="mini" :custom-style="{background: item.buy_btn_color}">
+														<u-icon name="shopping-cart"></u-icon>
+													</u-button>
+												</view>
+											</view>
+										</view>
+										
+									</view>
 								</view>
 							</view>
-						</view>
+						</template>
+						
 						
 					</view>
 					<view v-else>
-						<u-empty text="请选择分类,生成分类选项卡" mode="list"></u-empty>
+						<u-empty text="请配置商品" mode="list"></u-empty>
 					</view>
 				</template>
 				<template v-if="item.type == 'shopDiy'">
@@ -339,7 +491,7 @@
 												<u-image 
 													width="100%"
 													height="100%"
-													:src="ele.logo"
+													:src="ele.picmy"
 												></u-image>
 											</view>
 										</view>
@@ -360,7 +512,7 @@
 									</view>
 									<view class="shop-card-content">
 										<view class="s-p-list">
-											<view class="item u-padding-8" v-for="(prod) in ele.data" :key="prod.id">
+											<view class="item u-padding-20" v-for="(prod) in ele.data" :key="prod.id">
 												<view class="p-card u-flex">
 													<view class="p-img-wrap">
 														<view class="p-img">
@@ -371,8 +523,8 @@
 													<view class="p-content">
 														<view class="p-name u-line-2 " >{{prod.name}}</view>
 														<view class="p-bottom u-flex u-row-between">
-															<view class="item-left"></view>
-															<view class="item-right">￥{{prod.price}}</view>
+															<view class="item-left">￥{{prod.price}}</view>
+															<view class="item-right"></view>
 														</view>
 													</view>
 													
@@ -588,7 +740,7 @@
 			...mapState(['curCompOptActive', 'optData']),
 		},
 		created() {
-			// this.$http.get('ppi_search', {params: {name: 'PP'}})
+			// this.$http.get('Index/ppi_search', {params: {name: 'PP'}})
 			// console.log(this.opt)
 		},
 		filters: {
@@ -979,103 +1131,167 @@
 							}
 						}
 					}
-					&.list1 .item {
-						flex: 0 0 50%;
-						width: 50%;
-						&.col-3 {
-							flex: 0 0 33.3%;
-							width: 33.3%;
-							.p-card {
-								.p-name {
-									font-size: 14px;
-								}
-								.p-sub {
-									font-size: 12px;
-									margin-bottom: 0;
-								}
-								.p-content {
-									height: 80px;
-									padding: 2px 6px;
+					&.list1 {
+						&.scroll-rows {
+							display: block;
+							padding-right: 0!important;
+							padding-left: 0!important;
+							scroll-view {
+								width: 100%;
+								.item {
+									flex: 0 0 40%;
+									width: 40%;
 								}
 							}
 						}
-						.p-card {
-							width: 100%;
-							flex-direction: column;
-							.p-sub {
-								margin-bottom: 10px;
-							}
-						}
-						.p-content {
-							height: 200rpx;
-							width: 100%;
-						}
-						.coupon-card {
-							height: 70px;
-							.item-left {
-								padding-left: 15px;
-							}
-							.coupon-title {
-								font-size: 14px;
-								flex-wrap: wrap;
-								.coupon {
-									font-size: 16px;
-								}
-								.title {
-									width: 100%;
-									flex: 0 0 100%;
-									display: block;
-								}
-							}
-							.coupon-time {
-								display: none;
-							}
-							.coupon-btn {
-								 margin:0 auto;
-								 width:20px;
-								 line-height:14px;
-								 padding: 0;
-								 text-align: center;
-							}
-							.coupon-num {
-								display: none;
-							}
-						}
-					}
-					&.list2 .item {
-						flex: 0 0 100%;
-						width: 100%;
-						.p-card {
-							display: flex;
-							height: 240rpx;
-							.p-img-wrap {
-								flex: 0 0 240rpx;
-								width: 240rpx;
-								padding: 12rpx;
-								.p-img {
-									image {
-										border-radius: 6px;
+						.item {
+							flex: 0 0 50%;
+							width: 50%;
+							&.col-3 {
+								flex: 0 0 33.3%;
+								width: 33.3%;
+								.p-card {
+									.p-name {
+										font-size: 14px;
+									}
+									.p-sub {
+										font-size: 12px;
+										margin-bottom: 0;
+									}
+									.p-content {
+										height: 80px;
+										padding: 2px 6px;
 									}
 								}
 							}
+							.p-card {
+								width: 100%;
+								flex-direction: column;
+								.p-sub {
+									margin-bottom: 10px;
+								}
+							}
 							.p-content {
-								flex: 1;
-								width: calc(100% - 240rpx);
-								height: 100%;
-								padding-left: 20rpx;
-								padding: 8rpx;
-								.p-bottom {
-									position: absolute;
-									bottom: 0;
-									left: 0;
-									width: 100%;
-									height: 40px;
-									padding: 0 10rpx;
-									padding-right: 20rpx;
+								height: 200rpx;
+								width: 100%;
+							}
+							.coupon-card {
+								height: 70px;
+								.item-left {
+									padding-left: 15px;
+								}
+								.coupon-title {
+									font-size: 14px;
+									flex-wrap: wrap;
+									.coupon {
+										font-size: 16px;
+									}
+									.title {
+										width: 100%;
+										flex: 0 0 100%;
+										display: block;
+									}
+								}
+								.coupon-time {
+									display: none;
+								}
+								.coupon-btn {
+									 margin:0 auto;
+									 width:20px;
+									 line-height:14px;
+									 padding: 0;
+									 text-align: center;
+								}
+								.coupon-num {
+									display: none;
 								}
 							}
 						}
 					}
+					
+					&.list2 {
+						padding: 8rpx;
+						&.noPic {
+							padding: 12rpx;
+							.item{
+								padding: 0;
+								border-bottom: 1px solid #f8f8f8;
+								overflow: hidden;
+								&:first-child {
+									border-radius: 10px 10px 0 0;
+								}
+								&:last-child {
+									border-radius: 0 0 10px 10px;
+								}
+								.p-card {
+									height: auto;
+									border-radius: 0;
+									padding: 0px 15px;
+									.p-img-wrap {
+										display: none;
+									}
+									.p-content {
+										width: 100%;
+										padding-top: 10px;
+										padding-bottom: 35px;
+										
+										.p-name {
+											font-size: 14px;
+										}
+										.p-sub {
+											display: none;
+										}
+										.p-bottom {
+											/deep/ .u-size-mini {
+												height: 20px;
+												line-height: 20px;
+											}
+										}
+									}
+								}
+							}
+							
+							
+						}
+						.item {
+							flex: 0 0 100%;
+							width: 100%;
+							padding: 8rpx;
+							
+							.p-card {
+								display: flex;
+								height: 240rpx;
+								
+								.p-img-wrap {
+									flex: 0 0 240rpx;
+									width: 240rpx;
+									padding: 12rpx;
+									.p-img {
+										image {
+											border-radius: 6px;
+										}
+									}
+								}
+								.p-content {
+									flex: 1;
+									width: calc(100% - 240rpx);
+									height: 100%;
+									padding-left: 20rpx;
+									padding: 8rpx;
+									.p-bottom {
+										position: absolute;
+										bottom: 0;
+										left: 0;
+										width: 100%;
+										height: 40px;
+										padding: 0 10rpx;
+										padding-right: 20rpx;
+									}
+								}
+							}
+						}
+					}
+					
 				}
 			}
 			.shop-wrapper {
@@ -1119,11 +1335,14 @@
 									}
 									.info-tags {
 										font-size: 12px;
+										min-height: 10px;
 										.item-tag {
+											flex: 0 0 auto;
 											color: #fff;
 											background-color: #804ED1;
 											padding: 1px 5px;
 											border-radius: 3px;
+											margin-right: 3px;
 										}
 									}
 								}
@@ -1135,11 +1354,11 @@
 									.item {
 										height: 50%;
 										.p-card {
-											height: 80px;
+											height: 100%;
 											.p-img-wrap {
-												flex: 0 0 75px;
-												width: 75px;
-												height: 75px;
+												flex: 0 0 70px;
+												width: 70px;
+												height: 70px;
 												position: relative;
 												border: 1px solid #eee;
 												.p-img {
@@ -1153,19 +1372,19 @@
 												}
 											}
 											.p-content {
-												flex: 0 0 calc(100% - 75px);
-												width: calc(100% - 75px);
-												height: 75px;
+												flex: 0 0 calc(100% - 70px);
+												width: calc(100% - 70px);
+												height: 70px;
 												padding-left: 10px;
 												.p-name {
 													font-size: 14px;
 													color: #333;
 													line-height: 20px;
 													min-height: 40px;
-													margin-bottom: 15px;
+													margin-bottom: 8px;
 												}
 												.p-bottom {
-													.item-right {
+													.item-left {
 														color: red;
 													}
 												}

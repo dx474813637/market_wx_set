@@ -8,10 +8,24 @@
 			</view>
 		</view>
 		<view class="menu-options-row u-flex u-col-top" v-if="style == '1'">
+			<view class="item-label u-padding-top-20">排列类型</view>
+			<view class="item-content u-flex">
+				<el-radio v-model="col_type" label="1">多行模式</el-radio>
+				<el-radio v-model="col_type" label="2">单行滑动</el-radio>
+			</view>
+		</view>
+		<view class="menu-options-row u-flex u-col-top" v-if="style == '1' && col_type == '1'">
 			<view class="item-label u-padding-top-20">列数</view>
 			<view class="item-content u-flex">
 				<el-radio v-model="col_num" label="2">2列</el-radio>
 				<el-radio v-model="col_num" label="3">3列</el-radio>
+			</view>
+		</view>
+		<view class="menu-options-row u-flex u-col-top" v-if="style == '2' ">
+			<view class="item-label u-padding-top-20">商品图片</view>
+			<view class="item-content u-flex">
+				<el-radio v-model="isPic" label="1">显示</el-radio>
+				<el-radio v-model="isPic" label="2">不显示</el-radio>
 			</view>
 		</view>
 		<view class="menu-options-row u-flex u-col-top">
@@ -98,6 +112,8 @@
 				curActive: -1,
 				style: "1",
 				col_num: "2",
+				col_type: "1",
+				isPic: "1",
 				show_bar: "1",
 				uploadUrl: "http://www.example.com/upload",
 				selectArr: []
@@ -109,6 +125,8 @@
 		async created() {
 			this.style = this.optData.options[this.curCompOptActive.index].style
 			this.col_num = this.optData.options[this.curCompOptActive.index].col_num
+			this.col_type = this.optData.options[this.curCompOptActive.index].col_type
+			this.isPic = this.optData.options[this.curCompOptActive.index].isPic
 			this.show_bar = this.optData.options[this.curCompOptActive.index].show_bar
 			this.selectArr = this.optData.options[this.curCompOptActive.index].tabsId
 			if(this.cateData && this.cateData.length == 0) {
@@ -125,6 +143,16 @@
 			col_num(newv) {
 				this.updateProps({
 					col_num: newv
+				})
+			},
+			col_type(newv) {
+				this.updateProps({
+					col_type: newv
+				})
+			},
+			isPic(newv) {
+				this.updateProps({
+					isPic: newv
 				})
 			},
 			show_bar(newv) {
@@ -200,7 +228,7 @@
 							name = name.children
 						}
 					})
-					p_arr.push(this.$http.get(`${this.ajaxBaseUrl}diy_home_product`, {params: {cate: id, p: 1}}))
+					p_arr.push(this.$http.get(`Index/diy_home_product`, {params: {cate: id, p: 1}}))
 					data.push({ name, data: []})
 					
 				})
