@@ -1,0 +1,1 @@
+{{scope.row.cate=='2'?scope.row.coupon/10+'折':scope.row.coupon}}

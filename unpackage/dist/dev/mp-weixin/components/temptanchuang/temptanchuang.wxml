@@ -1,0 +1,1 @@
+<view class="tc-wrapper u-flex u-row-center data-v-5e7091f4"><block wx:if="{{optData.alertAd.data&&optData.alertAd.data.length>0}}"><view class="ad u-flex u-row-center data-v-5e7091f4"><image src="{{optData.alertAd.data[curAlertAdActive].url}}" mode class="data-v-5e7091f4"></image></view></block></view>

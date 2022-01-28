@@ -55,6 +55,9 @@
 			<template v-if="curCompOptActive.type == 'hq'">
 				<optionsHq :key="curCompOptActive.index"></optionsHq>
 			</template>
+			<template v-if="curCompOptActive.type == 'gap'">
+				<optionsGap :key="curCompOptActive.index"></optionsGap>
+			</template>
 		</template>
 		<template v-else-if="activeIndex == 1">
 			<view class="w-title u-flex">

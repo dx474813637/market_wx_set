@@ -59,7 +59,8 @@
 						<u-swiper 
 							:list="item.data" 
 							:height="item.diy? item.diyHeight : 400" 
-							:border-radius="item.diyRadius" 
+							:border-radius="item.diyRadius"
+							bg-color="transparent"
 						></u-swiper>
 						<view class="swiper-mask"></view>
 					</view>
@@ -469,12 +470,12 @@
 					</view>
 				</template>
 				<template v-if="item.type == 'shopDiy'">
-					<scroll-view scroll-x class="shop-wrapper" v-if="item.data && item.data.length > 0">
-						<view class="shop-rows u-flex" 
+					<scroll-view scroll-x class="shop-wrapper" v-if="item.data && item.data.length > 0"
 							:style="{
 								background: item.list_bg_color
 							}"
 						>
+						<view class="shop-rows u-flex" >
 							<view class="item-row"
 								v-for="(ele, index) in item.data"
 								:key="ele.id"
@@ -629,6 +630,9 @@
 								:showAction="item.showAction"
 								:actionText="item.actionText"
 								:borderColor="item.borderColor"
+								:action-style="{
+									color: item.action_color
+								}"
 							></u-search>
 						</view>
 						
@@ -662,9 +666,9 @@
 								<view class="news-card">
 									<view class="news-content">
 										<view class="news-name u-line-1 u-font-30">{{ele.title}}</view>
-										<view class="news-bottom u-flex u-row-between">
+										<view class="news-bottom u-flex">
 											<view class="item-left">{{ele.source}}</view>
-											<view class="item-right">{{ele.dtime}}</view>
+											<view class="u-p-l-20 item-right">{{ele.dtime}}</view>
 										</view>
 									</view>
 									
@@ -714,6 +718,14 @@
 						<u-empty text="请搜索行情关键字,并加入生成分类选项卡" mode="list"></u-empty>
 					</view>
 				</template>
+				<template v-if="item.type == 'gap'">
+					<view :style="{
+						'backgroundColor': item.bg_color,
+						'width': item.width + '%',
+						'height': item.height + 'rpx',
+						'margin': '0 auto'
+					}"></view>
+				</template>
 			</view>
 		</view>
 	</view>
@@ -740,7 +752,7 @@
 			...mapState(['curCompOptActive', 'optData']),
 		},
 		created() {
-			// this.$http.get('Index/ppi_search', {params: {name: 'PP'}})
+			// this.$http.get('/Market/api.html?api_url_xcx=ppi_search', {params: {name: 'PP'}})
 			// console.log(this.opt)
 		},
 		filters: {
@@ -804,8 +816,10 @@
 <style lang="scss" scoped>
 	.navbar {
 		color: #000;
-		height: 100rpx;
-		font-size: 16px;
+		height: 90rpx;
+		font-size: 14px;
+		position: relative;
+		z-index: 50;
 		// border-bottom: 1rpx solid #f8f8f8;
 		.item {
 			
@@ -814,6 +828,7 @@
 	.wrapper {
 		position: relative;
 		background-color: #fff;
+		overflow-x: hidden;
 		.top-box {
 			position: absolute;
 			top: 0;
@@ -936,9 +951,9 @@
 				}
 			}
 			.menu-wrapper {
-				padding: 0px 5px 20px;
+				padding: 0 5px 10px;
 				&.nowrap {
-					padding: 5px 10px;
+					padding: 10px 10px;
 					.item {
 						min-height: 25px;
 						flex-direction: row;
@@ -957,7 +972,7 @@
 					min-height: 80px;
 					flex-direction: column;
 					flex: 1;
-					padding-top: 20px;
+					padding-top: 10px;
 					&.col-4 {
 						flex: 0 0 25%;
 						width: 25%;
@@ -1026,7 +1041,10 @@
 			}
 			.product-wrapper {
 				.product-tabs {
-					
+					padding: 4px 8px;
+					/deep/ .u-tabs {
+						border-radius: 5px;
+					}
 				}
 				.product-list {
 					background-color: #f8f8f8;
@@ -1297,10 +1315,9 @@
 			.shop-wrapper {
 				// padding: 10px 0;
 				.shop-rows {
-					padding: 20px 10px;
-					background-color: #f8f8f8;
+					padding: 10px;
 					.item-row {
-						margin-right: 20px;
+						margin-right: 10px;
 						.shop-card {
 							width: 280px;
 							height: 240px;
@@ -1398,6 +1415,12 @@
 				}
 			}
 			.news-wrapper {
+				.news-tabs {
+					padding: 4px 8px;
+					/deep/ .u-tabs {
+						border-radius: 5px;
+					}
+				}
 				.news-list {
 					.news-card {
 						border-radius: 5px;

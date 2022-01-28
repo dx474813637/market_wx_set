@@ -1,0 +1,1 @@
+<block wx:if="{{scope.row.cate=='1'}}">满减券</block><block wx:else><block wx:if="{{scope.row.cate=='2'}}">满折券</block><block wx:else>{{scope.row.cate}}</block></block>

@@ -1,12 +1,12 @@
 <template>
 	<view class="ww">
-		<view class="menu-options-row u-flex ">
+		<!-- <view class="menu-options-row u-flex ">
 			<view class="item-label">顶部标题</view>
 			<view class="item-content u-flex">
 				<u-switch v-model="nav_bar_flag" size="35"></u-switch>
 			</view>
 		</view>
-		<template v-if="nav_bar_flag">
+		<template v-if="nav_bar_flag"> -->
 			<view class="menu-options-row u-flex">
 				<view class="item-label">顶部标题栏文本</view>
 				<view class="item-content u-flex u-flex-wrap">
@@ -19,27 +19,29 @@
 				<view class="item-content u-flex u-flex-wrap">
 					<u-input :value="optData.nav_bar_bgcolor" border @input="changenavbgColor"
 						type="text" />
-					<el-color-picker :value="optData.nav_bar_bgcolor"
+					<el-color-picker class="u-m-l-10" :value="optData.nav_bar_bgcolor"
 						@change="changenavbgColor"></el-color-picker>
 				</view>
 			</view>
 			<view class="menu-options-row u-flex">
 				<view class="item-label">顶部标题文本颜色</view>
 				<view class="item-content u-flex u-flex-wrap">
-					<u-input :value="optData.nav_bar_color" border @input="changenavColor"
+					<el-radio v-model="nav_bar_color" label="#ffffff">白色</el-radio>
+					<el-radio v-model="nav_bar_color" label="#000000">黑色</el-radio>
+					<!-- <u-input :value="optData.nav_bar_color" border @input="changenavColor"
 						type="text" />
-					<el-color-picker :value="optData.nav_bar_color"
-						@change="changenavColor"></el-color-picker>
+					<el-color-picker class="u-m-l-10" :value="optData.nav_bar_color"
+						@change="changenavColor"></el-color-picker> -->
 				</view>
 			</view>
-		</template>
+		<!-- </template> -->
 		
 		<view class="menu-options-row u-flex">
 			<view class="item-label">页面背景颜色</view>
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.bgColor" border @input="changebgColor"
 					type="text" />
-				<el-color-picker :value="optData.bgColor"
+				<el-color-picker class="u-m-l-10" :value="optData.bgColor"
 					@change="changebgColor"></el-color-picker>
 			</view>
 		</view>
@@ -64,7 +66,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.top_box_color" border @input="changetopBoxColor"
 					type="text" />
-				<el-color-picker :value="optData.top_box_color"
+				<el-color-picker class="u-m-l-10" :value="optData.top_box_color"
 					@change="changetopBoxColor"></el-color-picker>
 			</view>
 		</view>
@@ -73,7 +75,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.top_box_color2" border @input="changetopBoxColor2"
 					type="text" />
-				<el-color-picker :value="optData.top_box_color2"
+				<el-color-picker class="u-m-l-10" :value="optData.top_box_color2"
 					@change="changetopBoxColor2"></el-color-picker>
 			</view>
 		</view>
@@ -167,6 +169,7 @@
 			return {
 				nav_bar_flag: false,
 				top_box_flag: '-1',
+				nav_bar_color: '#000000'
 			};
 		},
 		computed: {
@@ -175,6 +178,7 @@
 		created() {
 			this.nav_bar_flag = this.optData.nav_bar_flag
 			this.top_box_flag = this.optData.top_box_flag
+			this.nav_bar_color = this.optData.nav_bar_color
 		},
 		watch: {
 			nav_bar_flag(newv) {
@@ -185,6 +189,11 @@
 			top_box_flag(newv) {
 				this.updatePageOpt({
 					top_box_flag: newv
+				})
+			},
+			nav_bar_color(newv) {
+				this.updatePageOpt({
+					nav_bar_color: newv
 				})
 			}
 		},

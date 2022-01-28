@@ -32,7 +32,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.options[curCompOptActive.index].title_color" border
 					@input="changetitleColor" type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].title_color"
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].title_color"
 					@change="changetitleColor"></el-color-picker>
 			</view>
 		</view>

@@ -4,15 +4,17 @@ import Request from './luch-request/index.js'
 
 const http = new Request()
 http.setConfig((config) => { /* 设置全局配置 */
-	config.baseURL = 'http://market.netsun.testwebsite.cn/' /* 根域名不同 */
+	config.baseURL = 'https://wx3.y.netsun.com/' /* 根域名不同 */
 	config.header = {
 		...config.header,
 		'content-type': 'application/x-www-form-urlencoded',
-		// 'appid': 10000,
-		// 'appsecret': '7923FoGlaAlRnbpfl+lepwzh/2lVLDAnb8gyRDSpJKX6TJLW9CTXfW4',
-		// 'xcxlogin': extConfig.attr.login,
-		// 'xcxappid': extConfig.attr.wxappid,
+		'appid': 10000,
+		'appsecret': '7923FoGlaAlRnbpfl+lepwzh/2lVLDAnb8gyRDSpJKX6TJLW9CTXfW4',
+		'xcxlogin': attr.login,
+		'xcxappid': attr.wxappid,
+		'market': attr.market
 	}
+	
 	return config
 })
 

@@ -12,7 +12,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.options[curCompOptActive.index].bg1_color" border
 					@input="changebg1Color" type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].bg1_color"
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].bg1_color"
 					@change="changebg1Color"></el-color-picker>
 			</view>
 		</view>
@@ -21,7 +21,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.options[curCompOptActive.index].bg2_color" border
 					@input="changebg2Color" type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].bg2_color"
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].bg2_color"
 					@change="changebg2Color"></el-color-picker>
 			</view>
 		</view>
@@ -30,7 +30,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.options[curCompOptActive.index].font1_color" border
 					@input="changefont1Color" type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].font1_color"
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].font1_color"
 					@change="changefont1Color"></el-color-picker>
 			</view>
 		</view>
@@ -39,7 +39,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.options[curCompOptActive.index].font2_color" border
 					@input="changefont2Color" type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].font2_color"
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].font2_color"
 					@change="changefont2Color"></el-color-picker>
 			</view>
 		</view>
@@ -48,7 +48,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.options[curCompOptActive.index].btnbg_color" border
 					@input="changebtnbgColor" type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].btnbg_color"
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].btnbg_color"
 					@change="changebtnbgColor"></el-color-picker>
 			</view>
 		</view>
@@ -57,7 +57,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.options[curCompOptActive.index].btn_color" border
 					@input="changebtnColor" type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].btn_color"
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].btn_color"
 					@change="changebtnColor"></el-color-picker>
 			</view>
 		</view>

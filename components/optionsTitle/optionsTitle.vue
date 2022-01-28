@@ -66,7 +66,7 @@
 							<view class="citem-main u-flex u-flex-wrap">
 								<view class="item-input u-flex">
 									<u-input :value="optData.options[curCompOptActive.index].titleColor" border @input="changeMenuTitlteColor" type="text" />
-									<el-color-picker :value="optData.options[curCompOptActive.index].titleColor" @change="changeMenuTitlteColor"></el-color-picker>
+									<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].titleColor" @change="changeMenuTitlteColor"></el-color-picker>
 								</view>
 							</view>
 						</view>

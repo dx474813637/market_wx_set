@@ -47,7 +47,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.options[curCompOptActive.index].list_bg_color" border
 					@input="changelistbgColor" type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].list_bg_color"
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].list_bg_color"
 					@change="changelistbgColor"></el-color-picker>
 			</view>
 		</view>
@@ -56,7 +56,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.options[curCompOptActive.index].buy_btn_color" border @input="changebtnColor"
 					type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].buy_btn_color"
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].buy_btn_color"
 					@change="changebtnColor"></el-color-picker>
 			</view>
 		</view>

@@ -3,6 +3,9 @@ import { Notification } from 'element-ui';
 import {typeToName} from "../static/js/diyComponents.js"
 
 export const mutations = {
+	updateOptData(state, data) {
+		state.optData = data
+	},
 	changeKeyTime(state, data) {
 		state.keytime = new Date().getTime()
 	},
@@ -191,7 +194,7 @@ export const mutations = {
 				obj.data.push({
 					id: i,
 					image: "http://dingxiang.netsun.testwebsite.cn/public/img/image-default.jpg",
-					link: "http://www.baidu.com"
+					link: ""
 				})
 			}
 		} else if (name == 'menu') {
@@ -205,7 +208,7 @@ export const mutations = {
 					id: i,
 					title: "标题",
 					url: "http://dingxiang.netsun.testwebsite.cn/public/img/image-default.jpg",
-					link: "http://www.baidu.com"
+					link: "/pages/prodList/prodList"
 				})
 			}
 		} else if (name == 'ad') {
@@ -217,7 +220,7 @@ export const mutations = {
 				data: [{
 					id: 0,
 					image: "http://dingxiang.netsun.testwebsite.cn/public/img/image-default.jpg",
-					link: "http://www.baidu.com",
+					link: "",
 				}]
 			})
 		} else if (name == 'title') {
@@ -281,6 +284,7 @@ export const mutations = {
 				placeholderColor: "#909399",
 				clearabled: true,
 				showAction: true,
+				action_color: '#000',
 				leftPic: true,
 				leftPicWidth: 30,
 				leftPicSrc: '',
@@ -320,6 +324,13 @@ export const mutations = {
 				list_bg_color: "#f8f8f8",
 				tabsId: [],
 				tabs: []
+			})
+		} else if( name == 'gap') {
+			Object.assign(obj, {
+				type: "gap",
+				bg_color: '',
+				width: 100,
+				height: 10,
 			})
 		}
 		

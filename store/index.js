@@ -11,18 +11,24 @@ const store = new Vuex.Store({
 		},
 		curAlertAdActive: 0,
 		activeIndex: 0,
-		optData: data || {},
+		optData: {},
 		cateData: [],
 		newsCate: [],
 		coupon_data: {},
 		product_data: {},
 		richtext_data: {},
-		uploadUrl: "http://market.netsun.testwebsite.cn/Index/up_diy_img",
+		uploadUrl: "https://wx3.y.netsun.com/Index/up_diy_img",
 		isChanged: false,
 		previewWindow: null,
 		pageOptFlag: false,
 		keytime: "",
-		ajaxBaseUrl: ""
+		ajaxBaseUrl: "",
+		// uploadHeader: {
+		// 	'content-type': 'application/x-www-form-urlencoded',
+		// 	'appid': 10000,
+		// 	'appsecret': '7923FoGlaAlRnbpfl+lepwzh/2lVLDAnb8gyRDSpJKX6TJLW9CTXfW4',
+		// 	...attr,
+		// }
 	},
 	mutations,
 	actions

@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "tempshouye": "/components/tempshouye/tempshouye",
+    "temptanchuang": "/components/temptanchuang/temptanchuang",
+    "tempxuanfu": "/components/tempxuanfu/tempxuanfu"
+  },
+  "component": true
+}

@@ -1,0 +1,1 @@
+<view class="richtext data-v-4f34d490"><u-parse vue-id="d1338314-6" autoscroll="{{true}}" html="{{scope.row.info}}" class="data-v-4f34d490" bind:__l="__l"></u-parse></view>

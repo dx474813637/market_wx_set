@@ -45,7 +45,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.options[curCompOptActive.index].list_bg_color" border @input="changelistbgColor"
 					type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].list_bg_color"
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].list_bg_color"
 					@change="changelistbgColor"></el-color-picker>
 			</view>
 		</view>
@@ -255,7 +255,7 @@
 		name: "optionsShopDiy",
 		mounted() {
 			this.initSortable()
-			// this.$http.get('Index/diy_home_shop_product', {
+			// this.$http.get('/Market/api.html?api_url_xcx=diy_home_shop_product', {
 			// 	params: {
 			// 		login: 'dsadas'
 			// 	}
@@ -340,7 +340,7 @@
 				this.s_loading = true
 				this.s_res = []
 				
-				let res = await this.$http.get('Index/diy_home_shop_product', {
+				let res = await this.$http.get('/Market/api.html?api_url_xcx=diy_home_shop_product', {
 					params: {
 						login: this.kw,
 					}
@@ -373,7 +373,7 @@
 				});
 			},
 			addShop(item) {
-				if(!item.picmy) item.picmy = 'http://market.netsun.testwebsite.cn/Public/Upload/diy/61e3935bdc488.png'
+				if(!item.picmy) item.picmy = ''
 				this.addnewData({
 					...item,
 					tag: ['好店推荐'],
@@ -381,7 +381,7 @@
 					tag_color_bg: '#f90',
 					header_color: '#fff',
 					header_bg_style: '1',
-					header_bg_src: 'http://market.netsun.testwebsite.cn/Public/Upload/diy/61e392fa4fa0b.png',
+					header_bg_src: '',
 					header_bg: '#aa55ff',
 					header_bg2: '#5555ff',
 					data: []

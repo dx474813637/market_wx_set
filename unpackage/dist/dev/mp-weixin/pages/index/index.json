@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "diy",
+  "usingComponents": {
+    "u-switch": "/node-modules/uview-ui/components/u-switch/u-switch",
+    "nav-menu": "/components/navMenu/navMenu",
+    "template-index": "/components/templateIndex/templateIndex",
+    "component-option": "/components/componentOption/componentOption"
+  }
+}

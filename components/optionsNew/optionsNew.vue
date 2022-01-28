@@ -27,7 +27,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.options[curCompOptActive.index].activeColor" border @input="changeActiveColor"
 					type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].activeColor"
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].activeColor"
 					@change="changeActiveColor"></el-color-picker>
 			</view>
 		</view>
@@ -36,7 +36,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.options[curCompOptActive.index].inactiveColor" border @input="changeinActiveColor"
 					type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].inactiveColor"
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].inactiveColor"
 					@change="changeinActiveColor"></el-color-picker>
 			</view>
 		</view>
@@ -45,7 +45,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.options[curCompOptActive.index].tabs_bg_color" border @input="changebgColor"
 					type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].tabs_bg_color"
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].tabs_bg_color"
 					@change="changebgColor"></el-color-picker>
 			</view>
 		</view>
@@ -54,7 +54,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.options[curCompOptActive.index].list_bg_color" border @input="changelistbgColor"
 					type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].list_bg_color"
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].list_bg_color"
 					@change="changelistbgColor"></el-color-picker>
 			</view>
 		</view>
@@ -163,7 +163,7 @@
 							name = name.children
 						}
 					})
-					p_arr.push(this.$http.get(`Index/diy_home_news`, {params: {cate: id, p: 1}}))
+					p_arr.push(this.$http.get(`/Market/api.html?api_url_xcx=diy_home_news`, {params: {cate: id, p: 1}}))
 					data.push({ name, data: []})
 					
 				})

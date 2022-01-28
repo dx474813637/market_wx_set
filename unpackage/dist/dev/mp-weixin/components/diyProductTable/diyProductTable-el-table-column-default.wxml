@@ -1,0 +1,1 @@
+<u-image vue-id="0becacda-7" mode="aspectFill" width="80" height="80" src="{{scope.row.pimage}}" class="data-v-4ab509ac" bind:__l="__l"></u-image>

@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "u-switch": "/node-modules/uview-ui/components/u-switch/u-switch",
+    "u-input": "/node-modules/uview-ui/components/u-input/u-input"
+  },
+  "component": true
+}

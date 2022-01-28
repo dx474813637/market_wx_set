@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "diyProductTable-el-table-column-default": "/components/diyProductTable/diyProductTable-el-table-column-default",
+    "u-icon": "/node-modules/uview-ui/components/u-icon/u-icon",
+    "u-image": "/node-modules/uview-ui/components/u-image/u-image"
+  }
+}

@@ -12,7 +12,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.options[curCompOptActive.index].bgColor" border @input="changebgColor"
 					type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].bgColor"
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].bgColor"
 					@change="changebgColor"></el-color-picker>
 			</view>
 		</view>
@@ -21,7 +21,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.options[curCompOptActive.index].borderColor" border @input="changeborderColor"
 					type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].borderColor"
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].borderColor"
 					@change="changeborderColor"></el-color-picker>
 			</view>
 		</view>
@@ -45,7 +45,7 @@
 			<view class="item-content u-flex u-flex-wrap">
 				<u-input :value="optData.options[curCompOptActive.index].color" border @input="changecolor"
 					type="text" />
-				<el-color-picker :value="optData.options[curCompOptActive.index].color"
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].color"
 					@change="changecolor"></el-color-picker>
 			</view>
 		</view>
@@ -59,6 +59,15 @@
 			<view class="item-label">是否显示右侧按钮</view>
 			<view class="item-content u-flex">
 				<u-switch v-model="showAction" size="35"></u-switch>
+			</view>
+		</view>
+		<view class="menu-options-row u-flex u-col-top" v-if="showAction">
+			<view class="item-label">右侧按钮文本颜色</view>
+			<view class="item-content u-flex">
+				<u-input :value="optData.options[curCompOptActive.index].action_color" border @input="changeActionColor"
+					type="text" />
+				<el-color-picker class="u-m-l-10" :value="optData.options[curCompOptActive.index].action_color"
+					@change="changeActionColor"></el-color-picker>
 			</view>
 		</view>
 		<view class="menu-options-row u-flex" v-if="showAction">
@@ -205,6 +214,11 @@
 			changeplaceholder(event) {
 				this.updateProps({
 					placeholder: event
+				})
+			},
+			changeActionColor(event) {
+				this.updateProps({
+					action_color: event
 				})
 			},
 			changecolor(event) {

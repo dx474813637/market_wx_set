@@ -1,0 +1,18 @@
+{
+  "usingComponents": {
+    "u-icon": "/node-modules/uview-ui/components/u-icon/u-icon",
+    "options-page": "/components/optionsPage/optionsPage",
+    "options-swiper": "/components/optionsSwiper/optionsSwiper",
+    "options-menu": "/components/optionsMenu/optionsMenu",
+    "options-ad": "/components/optionsAd/optionsAd",
+    "options-title": "/components/optionsTitle/optionsTitle",
+    "options-tabs": "/components/optionsTabs/optionsTabs",
+    "options-prod-diy": "/components/optionsProdDiy/optionsProdDiy",
+    "options-coupon": "/components/optionsCoupon/optionsCoupon",
+    "options-search": "/components/optionsSearch/optionsSearch",
+    "options-rich-text": "/components/optionsRichText/optionsRichText",
+    "options-alertad": "/components/optionsAlertad/optionsAlertad",
+    "options-btns": "/components/optionsBtns/optionsBtns"
+  },
+  "component": true
+}

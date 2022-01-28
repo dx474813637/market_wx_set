@@ -36,7 +36,8 @@
 <script>
 	import {
 		mapState,
-		mapMutations
+		mapMutations,
+		mapActions
 	} from "vuex"
 	export default {
 		data() {
@@ -44,9 +45,10 @@
 				title: 'Hello',
 			}
 		},
-		onLoad() {
-			// this.$http.get('http://market.netsun.testwebsite.cn/Index/diy_home_product', {params: {p: 1}})
-
+		async onLoad() {
+			uni.showLoading()
+			await this.getHomeData()
+			uni.hideLoading()
 		},
 		computed: {
 			...mapState(['curCompOptActive', 'pageOptFlag', 'activeIndex', 'optData']),
@@ -62,6 +64,7 @@
 		},
 		methods: {
 			...mapMutations(['changeCurComp', 'changepageOptFlag']),
+			...mapActions(['getHomeData']),
 			async saveOptions() {
 				this.$confirm('是否保存当前配置信息?', '提示', {
 					confirmButtonText: '确定',
@@ -70,7 +73,7 @@
 				}).then(async () => {
 					// console.log(this.optData)
 					uni.showLoading()
-					let res = await this.$http.post('Index/diy_save', {
+					let res = await this.$http.post('/Market/diy_save', {
 						str: JSON.stringify(this.optData)
 					})
 					uni.hideLoading()
